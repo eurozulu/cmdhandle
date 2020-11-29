@@ -8,8 +8,13 @@ import (
 // The arguments are diveded into 'args' and 'flags'. Flags re args starting with '-',
 // args are the non flags preceeding the first flag.
 type CommandLine interface {
-	Args() []string
+	// Flags contains all the given flags (arguments begining with"-"
 	Flags() Flags
+	// Args gets all the non flag arguments form the command line
+	Args() []string
+	// Arg is a helper to get an unnamed argument from a given index.
+	// if the given index is <0 or > len Args, empty string is returned.
+	Arg(index int) string
 }
 
 // Flags are a set of named values.  Keys are the 'flag' name. The value is the following, non flag arguments, joined with a space.
@@ -35,6 +40,13 @@ type commandLine struct {
 // Args gets the non flag arguments from the command line
 func (c commandLine) Args() []string {
 	return c.args
+}
+
+func (c commandLine) Arg(index int) string {
+	if index < 0 || index >= len(c.args) {
+		return ""
+	}
+	return c.args[index]
 }
 
 // Flags gets the flags from the command line
