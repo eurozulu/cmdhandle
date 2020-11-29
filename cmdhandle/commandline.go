@@ -73,7 +73,7 @@ func ParseCommandLine(arguments ...string) *commandLine {
 		if k == "" {
 			args = append(args, arg)
 		} else {
-			flags[k] = strings.Join([]string{flags[k], arg}, " ")
+			flags[k] = strings.TrimSpace(strings.Join([]string{flags[k], arg}, " "))
 		}
 	}
 	return &commandLine{
