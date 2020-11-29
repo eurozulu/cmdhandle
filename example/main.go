@@ -2,22 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/eurozulu/cmdhandle/cmdhandle"
+	cmdline "github.com/eurozulu/cmdhandle/cmdhandle"
 	"log"
 )
 
 func main() {
-	mainline.Handle("admin", doMyCommand)
-	mainline.Handle("admin list", doMyCommandList)
-	mainline.Handle("admin info", doMyCommandInfo)
-	mainline.Handle("admin add", doMyCommandAdd)
+	cmdline.Handle("admin", doMyCommand)
+	cmdline.Handle("admin list", doMyCommandList)
+	cmdline.Handle("admin info", doMyCommandInfo)
+	cmdline.Handle("admin add", doMyCommandAdd)
 
-	if err := mainline.Serve(); err != nil {
+	if err := cmdline.Serve(); err != nil {
 		log.Fatalln(err)
 	}
 }
 
-func doMyCommand(cmd mainline.CommandLine) error {
+func doMyCommand(_ cmdline.CommandLine) error {
 	fmt.Println("admin <command>")
 	fmt.Println("Commands are:")
 	fmt.Println("\tlist\t\t\t list all the things")
@@ -26,7 +26,7 @@ func doMyCommand(cmd mainline.CommandLine) error {
 	return nil
 }
 
-func doMyCommandList(cmd mainline.CommandLine) error {
+func doMyCommandList(cmd cmdline.CommandLine) error {
 	_, ok := cmd.Flags().Get("verbose", "v")
 	if ok {
 		fmt.Println("doing verbose list")
@@ -36,12 +36,12 @@ func doMyCommandList(cmd mainline.CommandLine) error {
 	return nil
 }
 
-func doMyCommandInfo(cmd mainline.CommandLine) error {
-	fmt.Printf("doing info")
+func doMyCommandInfo(cmd cmdline.CommandLine) error {
+	fmt.Printf("doing info %v", cmd)
 	return nil
 }
 
-func doMyCommandAdd(cmd mainline.CommandLine) error {
+func doMyCommandAdd(cmd cmdline.CommandLine) error {
 	if len(cmd.Args()) < 2 {
 		return fmt.Errorf("must provide the name and url to add")
 	}

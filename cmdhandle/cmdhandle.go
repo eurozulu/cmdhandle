@@ -71,6 +71,7 @@ func (ch CommandHandler) Serve(args ...string) error {
 		}
 	}
 	if len(ptns) == 0 {
+		ch.ShowCommands()
 		return fmt.Errorf("unknown command")
 	}
 
@@ -81,4 +82,10 @@ func (ch CommandHandler) Serve(args ...string) error {
 
 	cmdLine.args = cmdLine.args[ptns[0].Depth():] // Trim off pattern matched from args.
 	return ptns[0].handler(cmdLine)
+}
+
+func (ch CommandHandler) ShowCommands() {
+	for _, cmd := range ch.patterns {
+		fmt.Printf("\t%s\n", strings.Join(cmd.pattern, " "))
+	}
 }
